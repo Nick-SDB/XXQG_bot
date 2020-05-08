@@ -9,17 +9,23 @@ from random import random
 from time import sleep
 from datetime import datetime
 from selenium.webdriver.chrome.options import Options
-
-chrome_options = Options()
-# 无头模式启动
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument("window-size=1024,768")
-chrome_options.add_argument("--no-sandbox")
+import platform
 
 url_main = 'https://www.xuexi.cn/'
 
-mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
+if platform.machine() != 'x86_64':
+    print('Enable hedless browser')
+    chrome_options = Options()
+    # 无头模式启动
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument("window-size=1024,768")
+    chrome_options.add_argument("--no-sandbox")
+    mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
+else:
+    mybrowser = myWebdriver()
+
+# mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
 mybrowser.maximize_window()
 mybrowser.login()
 point = mybrowser.get_point()
@@ -60,7 +66,7 @@ if point.article_read + point.article_time < 12:
             articles[0].click()
             mybrowser.switch_to_last_window()
             point = mybrowser.get_point()
-            # mybrowser.close_and_switch_to_last_window()
+            mybrowser.close_and_switch_to_last_window()
         else:
             btns = mybrowser.find_elements(By.CLASS_NAME, 'btn')
             for btn in btns:
@@ -100,8 +106,9 @@ if point.video_watched + point.video_time < 12:
                     video.click()
                     mybrowser.switch_to_last_window()
                     mybrowser.wait_for_video_and_mute()
-                    print('Watching video, page = {}, index = {}'.format(video_page, video_index_start))
-                    sleep(6 + random() * 2)
+                    watch_time = 5 + random() * 3
+                    print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
+                    sleep(watch_time)
                     mybrowser.close_and_switch_to_last_window()
                 else:
                     break
@@ -119,14 +126,17 @@ if point.video_watched + point.video_time < 12:
                     video_page += 1
                     break
     while point.video_time < 6:
-        print('[{}]Watching video for time ...'.format(datetime.now()))
+        print('[{}] Watching video for time ...'.format(datetime.now()))
         mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
         mybrowser.wait_and_click(sel.CLASS, 'innerPic')
         mybrowser.wait_for_video_and_mute()
         sleep((6 - point.video_time) * 250)
+        point = mybrowser.get_point()
+        mybrowser.close_and_switch_to_last_window()
 
 point = mybrowser.get_point()
 mybrowser.close_all()
+print('[{}] 刷分完成'.format(datetime.now()))
 msg = '每日登录：{}/1\t\n'.format(point.login)
 msg += '阅读文章：{}/6\t\n'.format(point.article_read)
 msg += '视听学习：{}/6\t\n'.format(point.video_watched)
