@@ -45,15 +45,6 @@ class myWebdriver(webdriver.Chrome):
             self.close_and_switch_to_last_window()
         else:
             self.close()
-            
-        # for i in self.window_handles:
-        #     if i == self.window_handles[-1]:
-        #         self.close()
-        #     else:
-        #         self.close_and_switch_to_last_window()
-
-        # for _ in self.window_handles:
-        #     self.close_and_switch_to_last_window()
 
     def match_selector(self, selector):
         if selector == sel.CSS:
@@ -78,10 +69,14 @@ class myWebdriver(webdriver.Chrome):
 
     
     def login(self):
+        print('Logging ...')
         self.get(url_main)
         self.wait_and_click(sel.CSS, '.login-icon')
         self.switch_to_last_window()
         self.execute_script('window.scrollTo(0,document.body.scrollHeight)')
+        self.wait(sel.XPATH, '//*[@id="ddlogin-iframe"]')
+        url_QR = self.find_element(By.XPATH,  '//*[@id="ddlogin-iframe"]')
+        login_QR = url_QR.screenshot('./login_QR.png')
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
 
