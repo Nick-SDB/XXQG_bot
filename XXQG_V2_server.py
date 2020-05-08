@@ -11,6 +11,7 @@ from datetime import datetime
 from selenium.webdriver.chrome.options import Options
 import platform
 
+
 url_main = 'https://www.xuexi.cn/'
 
 if platform.machine() != 'x86_64':
