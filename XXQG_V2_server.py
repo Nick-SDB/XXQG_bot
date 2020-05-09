@@ -15,15 +15,16 @@ import platform
 url_main = 'https://www.xuexi.cn/'
 
 if platform.machine() != 'x86_64':
+    HEADLESS = True
     print('Enable hedless browser')
     chrome_options = Options()
-    # 无头模式启动
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument("window-size=1024,768")
     chrome_options.add_argument("--no-sandbox")
     mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
 else:
+    HEADLESS = False
     mybrowser = myWebdriver()
 
 # mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
@@ -106,7 +107,8 @@ if point.video_watched + point.video_time < 12:
                     video_index_start += 1
                     video.click()
                     mybrowser.switch_to_last_window()
-                    mybrowser.wait_for_video_and_mute()
+                    if not HEADLESS:    
+                        mybrowser.wait_for_video_and_mute()
                     watch_time = 5 + random() * 3
                     print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
                     sleep(watch_time)
@@ -130,7 +132,8 @@ if point.video_watched + point.video_time < 12:
         print('[{}] Watching video for time ...'.format(datetime.now()))
         mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
         mybrowser.wait_and_click(sel.CLASS, 'innerPic')
-        mybrowser.wait_for_video_and_mute()
+        if not HEADLESS:
+            mybrowser.wait_for_video_and_mute()
         sleep((6 - point.video_time) * 250)
         point = mybrowser.get_point()
         mybrowser.close_and_switch_to_last_window()
