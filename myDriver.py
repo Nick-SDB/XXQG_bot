@@ -69,7 +69,7 @@ class myWebdriver(webdriver.Chrome):
 
     
     def login(self):
-        QR_XPATH = '//*[@id="app"]/div/div[2]/div[2]/div[1]/div'
+        QR_XPATH = '//*[@id="app"]/div/div[2]/div[2]'
         print('Logging ...')
         self.get(url_main)
         self.wait_and_click(sel.CSS, '.login-icon')
