@@ -69,13 +69,14 @@ class myWebdriver(webdriver.Chrome):
 
     
     def login(self):
-        QR_XPATH = '//*[@id="app"]/div/div[2]'
+        QR_XPATH = '//*[@id="ddlogin-iframe"]'
         print('Getting login page ...')
         self.get(url_main)
         self.wait_and_click(sel.CSS, '.login-icon')
         self.switch_to_last_window()
-        self.execute_script('window.scrollTo(0,document.body.scrollHeight)')
+        # self.execute_script('window.scrollTo(0,document.body.scrollHeight)')
         self.wait(sel.XPATH, QR_XPATH)
+        self.execute_script("arguments[0].scrollIntoView();", self.find_element(By.XPATH, QR_XPATH))
         url_QR = self.find_element(By.XPATH,  QR_XPATH)
         login_QR = url_QR.screenshot('./login_QR.png')
         print('Save QR code to ./login_QR.png')
