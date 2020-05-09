@@ -60,7 +60,7 @@ class myWebdriver(webdriver.Chrome):
     def wait_and_click(self, selector, location):
         s = self.match_selector(selector)
         element = WebDriverWait(self, 60).until(EC.presence_of_element_located((s, location))).click()
-        # element.click()
+        element.click()
         self.switch_to_window(self.window_handles[-1])
 
     def wait(self, selector, location):
