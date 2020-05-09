@@ -69,13 +69,14 @@ class myWebdriver(webdriver.Chrome):
 
     
     def login(self):
+        QR_XPATH = '//*[@id="qglogin"]'
         print('Logging ...')
         self.get(url_main)
         self.wait_and_click(sel.CSS, '.login-icon')
         self.switch_to_last_window()
         self.execute_script('window.scrollTo(0,document.body.scrollHeight)')
-        self.wait(sel.XPATH, '//*[@id="ddlogin-iframe"]')
-        url_QR = self.find_element(By.XPATH,  '//*[@id="ddlogin-iframe"]')
+        self.wait(sel.XPATH, QR_XPATH)
+        url_QR = self.find_element(By.XPATH,  QR_XPATH)
         login_QR = url_QR.screenshot('./login_QR.png')
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
