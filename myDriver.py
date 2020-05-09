@@ -69,7 +69,7 @@ class myWebdriver(webdriver.Chrome):
 
     
     def login(self):
-        QR_XPATH = '//*[@id="qglogin"]'
+        QR_XPATH = '//*[@id="app"]/div/div[2]/div[2]/div[1]/div'
         print('Logging ...')
         self.get(url_main)
         self.wait_and_click(sel.CSS, '.login-icon')
@@ -78,6 +78,7 @@ class myWebdriver(webdriver.Chrome):
         self.wait(sel.XPATH, QR_XPATH)
         url_QR = self.find_element(By.XPATH,  QR_XPATH)
         login_QR = url_QR.screenshot('./login_QR.png')
+        print('Save QR code as ./login_QR.png')
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
 
