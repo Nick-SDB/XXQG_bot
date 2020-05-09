@@ -78,7 +78,7 @@ class myWebdriver(webdriver.Chrome):
         self.wait(sel.XPATH, QR_XPATH)
         url_QR = self.find_element(By.XPATH,  QR_XPATH)
         login_QR = url_QR.screenshot('./login_QR.png')
-        print('Save QR code as ./login_QR.png')
+        print('Save QR code to ./login_QR.png')
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
 
