@@ -14,7 +14,7 @@ import platform
 
 url_main = 'https://www.xuexi.cn/'
 
-if platform.machine() != 'x86_64':
+if platform.machine() not in ['x86_64', 'AMD64']:
     HEADLESS = True
     print('Enable hedless browser')
     chrome_options = Options()
@@ -48,9 +48,9 @@ if point.article_read + point.article_time < 12:
     article_page = 0
     delay_per_step = 1
     delay_steps = 5
-    action_keydown = ActionChains(mybrowser)
-    action_keydown.key_down(Keys.ARROW_DOWN)
-    action_keydown.key_up(Keys.ARROW_DOWN)
+    action = ActionChains(mybrowser)
+    action.key_down(Keys.ARROW_DOWN)
+    action.key_up(Keys.ARROW_DOWN)
     while point.article_read < 6:
         if article_index_start < 20:
             if article_index_start == 0:
@@ -94,9 +94,7 @@ if point.video_watched + point.video_time < 12:
     while len(mybrowser.window_handles) > 1:
         mybrowser.close_and_switch_to_last_window()
     mybrowser.get(url_main)
-    # while mybrowser.current_url != url_main:
-    #     mybrowser.close_and_switch_to_last_window()
-    mybrowser.wait_and_click(sel.XPATH, '//*[@id="root"]/div/header/div[2]/div[1]/div[2]/a[2]')
+    mybrowser.wait_and_click(sel.PARTIAL_LINK, '学习电视台')
     mybrowser.wait_and_click(sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
     mybrowser.wait(sel.CLASS, 'innerPic')
     video_index_start = 0
