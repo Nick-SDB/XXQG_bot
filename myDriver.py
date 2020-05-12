@@ -39,12 +39,10 @@ class myWebdriver(webdriver.Chrome):
         self.close()
         self.switch_to_window(self.window_handles[-1])
 
-    def close_all(self):
+    def close_all_and_leave_main(self):
         self.switch_to_last_window()
-        if self.current_window_handle != self.window_handles[0]:
+        while self.current_window_handle != self.window_handles[0]:
             self.close_and_switch_to_last_window()
-        else:
-            self.close()
 
     def match_selector(self, selector):
         if selector == sel.CSS:
@@ -66,8 +64,7 @@ class myWebdriver(webdriver.Chrome):
     def wait(self, selector, location):
         s = self.match_selector(selector)
         WebDriverWait(self, 60).until(EC.presence_of_element_located((s, location)))
-
-    
+ 
     def login(self):
         QR_XPATH = '//*[@id="ddlogin-iframe"]'
         print('Getting login page ...')
@@ -96,7 +93,7 @@ class myWebdriver(webdriver.Chrome):
         points = point()
         points.total = int(element.text)
         pointCards = self.find_elements(By.CLASS_NAME, 'my-points-card-text')
-        [points.login, point.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards]
+        [points.login, point.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards[0: 5]]
         self.close_and_switch_to_last_window()
         msg = '每日登录：{}/1\t\n'.format(point.login)
         msg += '阅读文章：{}/6\t\n'.format(point.article_read)
