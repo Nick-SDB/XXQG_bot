@@ -78,7 +78,7 @@ class myWebdriver(webdriver.Chrome):
         self.wait(sel.XPATH, QR_XPATH)
         self.execute_script("arguments[0].scrollIntoView();", self.find_element(By.XPATH, QR_XPATH))
         url_QR = self.find_element(By.XPATH,  QR_XPATH)
-        login_QR = url_QR.screenshot('./login_QR.png')
+        url_QR.screenshot('./login_QR.png')
         print('Save QR code to ./login_QR.png')
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
@@ -98,10 +98,19 @@ class myWebdriver(webdriver.Chrome):
         pointCards = self.find_elements(By.CLASS_NAME, 'my-points-card-text')
         [points.login, point.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards]
         self.close_and_switch_to_last_window()
+        msg = '每日登录：{}/1\t\n'.format(point.login)
+        msg += '阅读文章：{}/6\t\n'.format(point.article_read)
+        msg += '视听学习：{}/6\t\n'.format(point.video_watched)
+        msg += '文章时长：{}/6\t\n'.format(point.article_time)
+        msg += '视听时长：{}/6\t\n'.format(point.video_time)
+        print(msg)
         return points
 
     def auto_read(self, articlr_page, article_index, action, delay_steps, delay_per_step):
         print('[{}] Reading article, page = {}, index = {}'.format(datetime.now(), articlr_page, article_index))
         for _ in range(delay_steps):
             action.perform()
+            if random() < 0.3:
+                sleep(random() / 5)
+                action.perform()
             sleep(delay_per_step + random())

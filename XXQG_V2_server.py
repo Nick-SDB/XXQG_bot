@@ -48,9 +48,9 @@ if point.article_read + point.article_time < 12:
     article_page = 0
     delay_per_step = 1
     delay_steps = 5
-    action = ActionChains(mybrowser)
-    action.key_down(Keys.ARROW_DOWN)
-    action.key_up(Keys.ARROW_DOWN)
+    action_keydown = ActionChains(mybrowser)
+    action_keydown.key_down(Keys.ARROW_DOWN)
+    action_keydown.key_up(Keys.ARROW_DOWN)
     while point.article_read < 6:
         if article_index_start < 20:
             if article_index_start == 0:
@@ -59,12 +59,14 @@ if point.article_read + point.article_time < 12:
                 if article_index_start < len(articles): 
                     article = articles[article_index_start]
                     article_index_start += 1
+                    sleep(random() * 2)
                     article.click()
                     mybrowser.switch_to_last_window()
                     mybrowser.auto_read(article_page, article_index_start, action, delay_steps, delay_per_step)
                     mybrowser.close_and_switch_to_last_window()
                 else:
                     break
+            sleep(random() * 2)
             articles[0].click()
             mybrowser.switch_to_last_window()
             point = mybrowser.get_point()
@@ -73,11 +75,13 @@ if point.article_read + point.article_time < 12:
             btns = mybrowser.find_elements(By.CLASS_NAME, 'btn')
             for btn in btns:
                 if btn.text == '>>':
+                    sleep(random() * 2)
                     btn.click()
             article_index_start = 0
             article_page += 1
     while point.article_time < 6:
         print('[{}] Reading article for time ...'.format(datetime.now()))
+        sleep(random() * 2)
         articles[0].click()
         mybrowser.switch_to_last_window()
         delay_steps = 6 * (6 - point.video_time)
@@ -105,6 +109,7 @@ if point.video_watched + point.video_time < 12:
                 if video_index_start < len(videos): 
                     video = videos[video_index_start]
                     video_index_start += 1
+                    sleep(random() * 2)
                     video.click()
                     mybrowser.switch_to_last_window()
                     if not HEADLESS:    
@@ -116,6 +121,7 @@ if point.video_watched + point.video_time < 12:
                 else:
                     break
             video = videos[0]
+            sleep(random() * 2)
             video.click()
             mybrowser.switch_to_last_window()
             point = mybrowser.get_point()
@@ -124,6 +130,7 @@ if point.video_watched + point.video_time < 12:
             btns = mybrowser.find_elements(By.CLASS_NAME, 'btn')
             for i in btns:
                 if i.text == '>>':
+                    sleep(random() * 2)
                     i.click()
                     video_index_start = 0
                     video_page += 1
