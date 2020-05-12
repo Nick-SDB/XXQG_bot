@@ -114,7 +114,7 @@ if point.video_watched + point.video_time < 12:
                     mybrowser.switch_to_last_window()
                     if not HEADLESS:    
                         mybrowser.wait_for_video_and_mute()
-                    watch_time = 5 + random() * 3
+                    watch_time = 10 + random() * 3
                     print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
                     sleep(watch_time)
                     mybrowser.close_and_switch_to_last_window()
