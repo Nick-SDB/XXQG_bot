@@ -96,6 +96,7 @@ if point.video_watched + point.video_time < 12:
     mybrowser.get(url_main)
     mybrowser.wait_and_click(sel.PARTIAL_LINK, '学习电视台')
     mybrowser.wait_and_click(sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
+    mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
     mybrowser.wait(sel.CLASS, 'innerPic')
     video_index_start = 0
     video_page = 0
