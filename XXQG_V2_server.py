@@ -114,8 +114,8 @@ while True:
                         sleep(random() * 2)
                         video.click()
                         mybrowser.switch_to_last_window()
-                        if not HEADLESS:    
-                            mybrowser.wait_for_video_and_mute()
+                        # if not HEADLESS:    
+                        #     mybrowser.wait_for_video_and_mute()
                         watch_time = 10 + random() * 3
                         print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
                         sleep(watch_time)
@@ -141,8 +141,8 @@ while True:
             print('[{}] Watching video for time ...'.format(datetime.now()))
             mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
             mybrowser.wait_and_click(sel.CLASS, 'innerPic')
-            if not HEADLESS:
-                mybrowser.wait_for_video_and_mute()
+            # if not HEADLESS:
+            #     mybrowser.wait_for_video_and_mute()
             sleep((6 - point.video_time) * 250)
             point = mybrowser.get_point()
             mybrowser.close_and_switch_to_last_window()
