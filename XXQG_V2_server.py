@@ -169,11 +169,11 @@ while True:
     while today.day == datetime.now().day:
         sleep(300 + random() * 300)
         mybrowser.get_point()
-        sendWechat('Waiting ...')
+        # sendWechat('Waiting ...')
     today = datetime.now()
     print('Waiting for learn at {}:{} ...'.format(XX_hour, XX_minute))
     while today.hour < XX_hour or today.minute < XX_minute:
         sleep(300 + random() * 300)
         mybrowser.get_point()
-        sendWechat('Waiting ...')
+        # sendWechat('Waiting ...')
         today = datetime.now()
