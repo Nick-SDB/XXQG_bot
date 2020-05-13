@@ -157,16 +157,17 @@ while True:
     msg += '视听学习：{}/6\t\n'.format(point.video_watched)
     msg += '文章时长：{}/6\t\n'.format(point.article_time)
     msg += '视听时长：{}/6\t\n'.format(point.video_time)
-    msg += '明天刷分时间：{}：{}'.format(XX_hour, XX_minute)
+    msg += '明天刷分时间：{}：{}\t\n'.format(XX_hour, XX_minute)
     sendWechat('刷分完成。今日刷分：{}，当前总分：{}，本次刷分：{}'.format(point.today(), point.total, point.total - point.start), msg)
 
     today = datetime.now()
     print('Waiting for a new day ...')
     while today.day == datetime.now().day:
-        sleep(3600)
-        # mybrowser.get_point()
+        sleep(300 + random() * 300)
+        mybrowser.get_point()
     today = datetime.now()
     print('Waiting for learn at {}:{} ...'.format(XX_hour, XX_minute))
     while today.hour < XX_hour or today.minute < XX_minute:
-        sleep(60)
+        sleep(300 + random() * 300)
+        mybrowser.get_point()
         today = datetime.now()
