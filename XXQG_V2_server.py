@@ -98,7 +98,9 @@ while True:
         mybrowser.get(url_main)
         sleep(5)
         mybrowser.wait_and_click(sel.PARTIAL_LINK, '学习电视台')
+        sleep(random() * 2)
         mybrowser.wait_and_click(sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
+        sleep(random() * 2)
         mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
         mybrowser.wait(sel.CLASS, 'innerPic')
         video_index_start = 0
@@ -116,7 +118,7 @@ while True:
                         mybrowser.switch_to_last_window()
                         # if not HEADLESS:    
                         #     mybrowser.wait_for_video_and_mute()
-                        watch_time = 10 + random() * 3
+                        watch_time = 30 + random() * 3
                         print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
                         sleep(watch_time)
                         mybrowser.close_and_switch_to_last_window()
@@ -139,7 +141,9 @@ while True:
                         break
         while point.video_time < 6:
             print('[{}] Watching video for time ...'.format(datetime.now()))
+            sleep(random() * 2)
             mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
+            sleep(random() * 2)
             mybrowser.wait_and_click(sel.CLASS, 'innerPic')
             # if not HEADLESS:
             #     mybrowser.wait_for_video_and_mute()
