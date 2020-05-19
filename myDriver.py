@@ -93,13 +93,13 @@ class myWebdriver(webdriver.Chrome):
         points = point()
         points.total = int(element.text)
         pointCards = self.find_elements(By.CLASS_NAME, 'my-points-card-text')
-        [points.login, point.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards[0: 5]]
+        [points.login, points.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards[: 5]]
         self.close_and_switch_to_last_window()
-        msg = '每日登录：{}/1\t\n'.format(point.login)
-        msg += '阅读文章：{}/6\t\n'.format(point.article_read)
-        msg += '视听学习：{}/6\t\n'.format(point.video_watched)
-        msg += '文章时长：{}/6\t\n'.format(point.article_time)
-        msg += '视听时长：{}/6\t\n'.format(point.video_time)
+        msg = '每日登录：{}/1\t\n'.format(points.login)
+        msg += '阅读文章：{}/6\t\n'.format(points.article_read)
+        msg += '视听学习：{}/6\t\n'.format(points.video_watched)
+        msg += '文章时长：{}/6\t\n'.format(points.article_time)
+        msg += '视听时长：{}/6\t\n'.format(points.video_time)
         print(msg)
         return points
 

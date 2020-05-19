@@ -22,7 +22,8 @@ if platform.machine() not in ['x86_64', 'AMD64']:
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument("window-size=1024,768")
     chrome_options.add_argument("--no-sandbox")
-    mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
+    mybrowser = myWebdriver(chrome_options=chrome_options,
+                            executable_path="/usr/bin/chromedriver")
 else:
     HEADLESS = False
     mybrowser = myWebdriver()
@@ -56,15 +57,17 @@ while True:
         while point.article_read < 6:
             if article_index_start < 20:
                 if article_index_start == 0:
-                    articles = mybrowser.find_elements(By.CLASS_NAME, 'text-wrap')
+                    articles = mybrowser.find_elements(
+                        By.CLASS_NAME, 'text-wrap')
                 for _ in range(6 - point.article_read):
-                    if article_index_start < len(articles): 
+                    if article_index_start < len(articles):
                         article = articles[article_index_start]
                         article_index_start += 1
                         sleep(random() * 2)
                         article.click()
                         mybrowser.switch_to_last_window()
-                        mybrowser.auto_read(article_page, article_index_start, action, delay_steps, delay_per_step)
+                        mybrowser.auto_read(
+                            article_page, article_index_start, action, delay_steps, delay_per_step)
                         mybrowser.close_and_switch_to_last_window()
                     else:
                         break
@@ -88,7 +91,8 @@ while True:
             mybrowser.switch_to_last_window()
             delay_steps = 6 * (6 - point.video_time)
             delay_per_step = 20
-            mybrowser.auto_read(article_page, 0, action, delay_steps, delay_per_step)
+            mybrowser.auto_read(article_page, 0, action,
+                                delay_steps, delay_per_step)
             point = mybrowser.get_point()
 
     # 观看视频
@@ -99,9 +103,11 @@ while True:
         sleep(5)
         mybrowser.wait_and_click(sel.PARTIAL_LINK, '学习电视台')
         sleep(random() * 2)
-        mybrowser.wait_and_click(sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
+        mybrowser.wait_and_click(
+            sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
         sleep(random() * 2)
-        mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
+        mybrowser.wait_and_click(
+            sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
         mybrowser.wait(sel.CLASS, 'innerPic')
         video_index_start = 0
         video_page = 0
@@ -110,16 +116,17 @@ while True:
                 if video_index_start == 0:
                     videos = mybrowser.find_elements(By.CLASS_NAME, 'innerPic')
                 for _ in range(6 - point.video_watched):
-                    if video_index_start < len(videos): 
+                    if video_index_start < len(videos):
                         video = videos[video_index_start]
                         video_index_start += 1
                         sleep(random() * 2)
                         video.click()
                         mybrowser.switch_to_last_window()
-                        # if not HEADLESS:    
+                        # if not HEADLESS:
                         #     mybrowser.wait_for_video_and_mute()
-                        watch_time = 30 + random() * 3
-                        print('[{}] Watching video, page = {}, index = {}, time = {}s'.format(datetime.now(), video_page, video_index_start, watch_time))
+                        watch_time = 10 + random() * 3
+                        print('[{}] Watching video, page={}, index={}, time={}s'.format(
+                            datetime.now(), video_page, video_index_start, watch_time))
                         sleep(watch_time)
                         mybrowser.close_and_switch_to_last_window()
                     else:
@@ -142,7 +149,8 @@ while True:
         while point.video_time < 6:
             print('[{}] Watching video for time ...'.format(datetime.now()))
             sleep(random() * 2)
-            mybrowser.wait_and_click(sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
+            mybrowser.wait_and_click(
+                sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[5]/div/div')
             sleep(random() * 2)
             mybrowser.wait_and_click(sel.CLASS, 'innerPic')
             # if not HEADLESS:
@@ -162,7 +170,8 @@ while True:
     msg += '文章时长：{}/6\t\n'.format(point.article_time)
     msg += '视听时长：{}/6\t\n'.format(point.video_time)
     msg += '明天刷分时间：{}：{}\t\n'.format(XX_hour, XX_minute)
-    sendWechat('刷分完成。今日刷分：{}，当前总分：{}，本次刷分：{}'.format(point.today(), point.total, point.total - point.start), msg)
+    sendWechat('刷分完成。今日刷分：{}，当前总分：{}，本次刷分：{}'.format(
+        point.today(), point.total, point.total - point.start), msg)
 
     today = datetime.now()
     print('Waiting for a new day ...')
