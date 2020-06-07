@@ -10,9 +10,14 @@ from time import sleep
 from datetime import datetime
 from selenium.webdriver.chrome.options import Options
 import platform
+import os
 
 
 url_main = 'https://www.xuexi.cn/'
+
+DEBUG = True
+
+print('Platform: {}, Debug: {}'.format(platform.machine(), DEBUG))
 
 if platform.machine() not in ['x86_64', 'AMD64']:
     HEADLESS = True
@@ -20,17 +25,28 @@ if platform.machine() not in ['x86_64', 'AMD64']:
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument("window-size=1024,768")
+    # chrome_options.add_argument("window-size=1024,768")
     chrome_options.add_argument("--no-sandbox")
     mybrowser = myWebdriver(chrome_options=chrome_options,
                             executable_path="/usr/bin/chromedriver")
+elif DEBUG:
+    HEADLESS = True
+    print('Enable hedless browser')
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    # chrome_options.add_argument("window-size=1024,768")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--mute-audio")
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    mybrowser = myWebdriver(chrome_options=chrome_options,
+                            executable_path="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver")
 else:
     HEADLESS = False
     mybrowser = myWebdriver()
+    mybrowser.maximize_window()
 
-# mybrowser = myWebdriver(chrome_options=chrome_options, executable_path="/usr/bin/chromedriver")
-mybrowser.maximize_window()
-mybrowser.login()
+mybrowser.login(DEBUG)
 
 while True:
     point = mybrowser.get_point()
@@ -49,7 +65,7 @@ while True:
         articles = mybrowser.find_elements(By.CLASS_NAME, 'text-wrap')
         article_index_start = 0
         article_page = 0
-        delay_per_step = 1
+        delay_per_step = 2
         delay_steps = 5
         action = ActionChains(mybrowser)
         action.key_down(Keys.ARROW_DOWN)
@@ -89,7 +105,7 @@ while True:
             sleep(random() * 2)
             articles[0].click()
             mybrowser.switch_to_last_window()
-            delay_steps = 6 * (6 - point.video_time)
+            delay_steps = 6 * (6 - point.article_time)
             delay_per_step = 20
             mybrowser.auto_read(article_page, 0, action,
                                 delay_steps, delay_per_step)
@@ -107,7 +123,7 @@ while True:
             sel.XPATH, '//*[@id="495f"]/div/div/div/div/div/section/div/div/div/div[1]/div[1]/div/div')
         sleep(random() * 2)
         mybrowser.wait_and_click(
-            sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
+            sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[1]/div/div')
         mybrowser.wait(sel.CLASS, 'innerPic')
         video_index_start = 0
         video_page = 0
@@ -124,10 +140,14 @@ while True:
                         mybrowser.switch_to_last_window()
                         # if not HEADLESS:
                         #     mybrowser.wait_for_video_and_mute()
-                        watch_time = 10 + random() * 3
+                        watch_time = 15 + random() * 3
                         print('[{}] Watching video, page={}, index={}, time={}s'.format(
                             datetime.now(), video_page, video_index_start, watch_time))
                         sleep(watch_time)
+                        # if DEBUG:
+                        #     path_screenshot = os.path.join(os.getcwd(), 'screenshot.png')
+                        #     print('Saving screenshot to {}'.format(path_screenshot))
+                        #     mybrowser.get_screenshot_as_file(path_screenshot)
                         mybrowser.close_and_switch_to_last_window()
                     else:
                         break
@@ -137,15 +157,23 @@ while True:
                 mybrowser.switch_to_last_window()
                 point = mybrowser.get_point()
                 mybrowser.close_and_switch_to_last_window()
+            elif video_page == 1:
+                break
             else:
-                btns = mybrowser.find_elements(By.CLASS_NAME, 'btn')
-                for i in btns:
-                    if i.text == '>>':
-                        sleep(random() * 2)
-                        i.click()
-                        video_index_start = 0
-                        video_page += 1
-                        break
+                # btns = mybrowser.find_elements(By.CLASS_NAME, 'btn')
+                # for i in btns:
+                #     if i.text == '>>':
+                #         sleep(random() * 2)
+                #         i.click()
+                #         video_index_start = 0
+                #         video_page += 1
+                #         break
+                sleep(random() * 2)
+                mybrowser.wait_and_click(
+                    sel.XPATH, '//*[@id="0454"]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div')
+                mybrowser.wait(sel.CLASS, 'innerPic')
+                video_index_start = 0
+                video_page = 1
         while point.video_time < 6:
             print('[{}] Watching video for time ...'.format(datetime.now()))
             sleep(random() * 2)

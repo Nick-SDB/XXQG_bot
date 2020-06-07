@@ -11,6 +11,7 @@ from wechat_ftqq import sendWechat
 from random import random
 from time import sleep
 from datetime import datetime
+import os
 
 url_main = 'https://www.xuexi.cn/'
 
@@ -65,7 +66,7 @@ class myWebdriver(webdriver.Chrome):
         s = self.match_selector(selector)
         WebDriverWait(self, 60).until(EC.presence_of_element_located((s, location)))
  
-    def login(self):
+    def login(self, DEBUG):
         QR_XPATH = '//*[@id="ddlogin-iframe"]'
         print('Getting login page ...')
         self.get(url_main)
@@ -74,9 +75,12 @@ class myWebdriver(webdriver.Chrome):
         # self.execute_script('window.scrollTo(0,document.body.scrollHeight)')
         self.wait(sel.XPATH, QR_XPATH)
         self.execute_script("arguments[0].scrollIntoView();", self.find_element(By.XPATH, QR_XPATH))
+        sleep(1)
         url_QR = self.find_element(By.XPATH,  QR_XPATH)
         url_QR.screenshot('./login_QR.png')
-        print('Save QR code to ./login_QR.png')
+        print('Save QR code to {}'.format(os.path.join(os.getcwd(), 'login_QR.png')))
+        if DEBUG:
+            os.startfile(os.path.join(os.getcwd(), 'login_QR.png'))
         while self.current_url != url_main: pass
         self.close_and_switch_to_last_window()
 
@@ -91,7 +95,8 @@ class myWebdriver(webdriver.Chrome):
         sleep(1)
         element = self.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div/div[2]/div[2]/span[1]')
         points = point()
-        points.total = int(element.text)
+        if element.text:
+            points.total = int(element.text)
         pointCards = self.find_elements(By.CLASS_NAME, 'my-points-card-text')
         [points.login, points.article_read, points.video_watched, points.article_time, points.video_time] = [int(i.text[0]) for i in pointCards[: 5]]
         self.close_and_switch_to_last_window()
