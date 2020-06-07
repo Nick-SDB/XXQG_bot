@@ -15,7 +15,7 @@ import os
 
 url_main = 'https://www.xuexi.cn/'
 
-DEBUG = True
+DEBUG = False
 
 print('Platform: {}, Debug: {}'.format(platform.machine(), DEBUG))
 
