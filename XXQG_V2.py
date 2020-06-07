@@ -208,7 +208,7 @@ while True:
         mybrowser.get_point()
         # sendWechat('Waiting ...')
     today = datetime.now()
-    print('Waiting for learn at {}:{} ...'.format(XX_hour, XX_minute))
+    print('Waiting for learning at {}:{} ...'.format(XX_hour, XX_minute))
     while today.hour < XX_hour or today.minute < XX_minute:
         sleep(300 + random() * 300)
         mybrowser.get_point()
